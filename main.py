@@ -7,17 +7,15 @@ Original file is located at
     https://colab.research.google.com/drive/1z0NmQedL93p60Eo5rTnS4bCqun0Yy86I
 """
 import streamlit as st
-import joblib
 from PIL import Image
 import pandas as pd
 from datetime import datetime
 import pickle
-import tensorflow as tf
 import requests
 import csv
 
 # Define the filename for the user database CSV file
-DB_FILENAME = "user_database.csv"
+DB_FILENAME = "https://github.com/udaybhaskar717/Solar-Power-Forecasting-login/blob/main/User_Data.csv"
 
 # Define the fields for the user database CSV file
 DB_FIELDS = ["email", "password"]
@@ -90,25 +88,6 @@ def main():
             # TODO: Open new web page for forecasting
         else:
             st.error("Incorrect email or password.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Define the URL of the .pkl file on GitHub
 github_url = 'https://github.com/udaybhaskar717/Solar-Power-Forecasting-APP/raw/main/stack_reg_1.pkl'
@@ -201,3 +180,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
