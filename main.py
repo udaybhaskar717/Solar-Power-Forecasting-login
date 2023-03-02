@@ -27,9 +27,9 @@ def app():
     
     # Sign-up form
     st.subheader("Sign-up")
-    name = st.text_input("Name")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+    name = st.text_input("Name",key="name_input")
+    email = st.text_input("Email",key="email_input")
+    password = st.text_input("Password", type="password",key="password_input")
     if st.button("Sign up"):
         # Create repository if it doesn't exist
         try:
