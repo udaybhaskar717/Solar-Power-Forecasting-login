@@ -3,7 +3,7 @@ from github import Github
 import json
 
 # Set up GitHub credentials
-ACCESS_TOKEN = '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'
+ACCESS_TOKEN = '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'
 g = Github(ACCESS_TOKEN)
 
 # Define functions for creating and retrieving data from repository
