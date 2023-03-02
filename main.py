@@ -57,38 +57,6 @@ def authenticate_user(email, password):
     else:
         return False
 
-# Define the main function for the Streamlit app
-def main():
-    st.title("Sign Up and Login")
-
-    # Create the user database CSV file if it does not already exist
-    try:
-        with open(DB_FILENAME, "r") as f:
-            pass
-    except FileNotFoundError:
-        create_user_database()
-
-    # Handle sign up form submission
-    if st.button("Sign Up"):
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
-        confirm_password = st.text_input("Confirm Password", type="password")
-        if password == confirm_password:
-            add_user_to_database(email, password)
-            st.success("Successfully signed up!")
-        else:
-            st.error("Passwords do not match.")
-
-    # Handle login form submission
-    if st.button("Log In"):
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
-        if authenticate_user(email, password):
-            st.success("Successfully logged in!")
-            # TODO: Open new web page for forecasting
-        else:
-            st.error("Incorrect email or password.")
-
 # Define the URL of the .pkl file on GitHub
 github_url = 'https://github.com/udaybhaskar717/Solar-Power-Forecasting-APP/raw/main/stack_reg_1.pkl'
 
@@ -104,8 +72,6 @@ def predict_solar_power(df):
     # make predictions using the loaded model
     predictions = model.predict(df)
     return predictions
-
-# create a function to get user inputs
 def get_user_inputs():
     st.header("Enter the weather data:")
     date = st.date_input("Date", datetime.now().date())
@@ -129,62 +95,45 @@ def get_user_inputs():
     user_inputs.set_index('Date', inplace=True)
 
     return user_inputs
+    def main():
+        st.title("GIL Solar Power Forecasting Tool for Gandikota PV plant")
+        # Set header image
+        # load image from URL
+        url = "https://raw.githubusercontent.com/udaybhaskar717/Solar-Power-Forecasting-APP/main/GIL_Image.png"
+        image = Image.open(requests.get(url, stream=True).raw)
+        # Create a container for the image
+        img_container = st.container()
+        # Add the image to the container
+        with img_container:
+            st.image(image, use_column_width=True)
+            st.markdown(
+               ''' <style>
+                .stApp {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .stApp > div:first-child {
+                    margin-top: -30px;
+                    margin-right: 10px;
+                    align-self: center;
+                    max-width: 100%;
+                }
+                </style>''', unsafe_allow_html=True)
+        # Add a login form to the app
+        st.sidebar.header("Login")
+        email = st.sidebar.text_input("Email")
+        password = st.sidebar.text_input("Password", type="password")
+        if authenticate_user(email, password):
+            st.sidebar.success("Logged in!")
+            user_inputs = get_user_inputs()
+            # Add a button to make the prediction
+            if st.button("Predict"):
+                # Make the prediction
+                prediction = predict_solar_power(user_inputs)
+                # Display the prediction
+                st.success(f"The predicted solar power output is {round(prediction[0],2)} kW.")
+        else:
+            st.sidebar.error("Incorrect email or password.")
 
-# create the app
-def main():
-    st.title("GIL Solar Power Forecasting Tool for Gandikota PV plant")
-    # Set header image
-    # load image from URL
-    url = "https://raw.githubusercontent.com/udaybhaskar717/Solar-Power-Forecasting-APP/main/GIL_Image.png"
-    image = Image.open(requests.get(url, stream=True).raw)
-# Create a container for the image
-    img_container = st.container()
-#   # Add the image to the container
-    with img_container:
-        st.image(image, use_column_width=True)
-        st.markdown(
-           ''' <style>
-            .stApp {
-                display: flex;
-                flex-direction: column;
-            }
-            .stApp > div:first-child {
-                margin-top: -30px;
-                margin-right: 10px;
-                align-self: flex-end;
-            }
-            </style>'''
-          ,
-            unsafe_allow_html=True
-        )
-
-#     st.write("Developed by")
-#     st.write("# G R Uday Kumar Reddy (213170007)")
-#     st.write("Under the Guidance of")
-#     st.write("# Prof. Zakir Hussain Rather")
-    user_inputs = get_user_inputs()
-
-    # make predictions
-    predictions = predict_solar_power(user_inputs)
-    
-    if st.button("Forecast"):
-        st.subheader("Predicted solar power output:")
-        st.write(f"{predictions[0]:.2f} kW")
-    st.markdown("---")
-    # add author's information
-    st.markdown("<br><br><br>", unsafe_allow_html=True) # to add some space
-    st.markdown("<p style='font-size:20px;'>Developed by</p>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:24px; font-weight:bold;'>G R Uday Kumar Reddy (213170007)</p>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:20px;'>Under the Guidance of</p>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:24px; font-weight:bold;'>Prof. Zakir Hussain Rather</p>", unsafe_allow_html=True)
-
-if __name__ == '__main__':
-    main()
-
-
-
-
-
-
-
-
+    if __name__ == "__main__":
+        main()
