@@ -14,6 +14,100 @@ from datetime import datetime
 import pickle
 import tensorflow as tf
 import requests
+import csv
+
+# Define the filename for the user database CSV file
+DB_FILENAME = "user_database.csv"
+
+# Define the fields for the user database CSV file
+DB_FIELDS = ["email", "password"]
+
+# Define the maximum number of login attempts before the user is locked out
+MAX_LOGIN_ATTEMPTS = 3
+
+# Define the lockout duration (in seconds) for a user who exceeds the maximum number of login attempts
+LOCKOUT_DURATION = 60
+
+# Define a function to create the user database CSV file if it does not already exist
+def create_user_database():
+    with open(DB_FILENAME, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(DB_FIELDS)
+
+# Define a function to add a new user to the user database CSV file
+def add_user_to_database(email, password):
+    with open(DB_FILENAME, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([email, password])
+
+# Define a function to retrieve a user's password from the user database CSV file
+def get_password_from_database(email):
+    with open(DB_FILENAME, "r") as f:
+        reader = csv.DictReader(f, fieldnames=DB_FIELDS)
+        for row in reader:
+            if row["email"] == email:
+                return row["password"]
+        return None
+
+# Define a function to authenticate a user's login credentials
+def authenticate_user(email, password):
+    user_password = get_password_from_database(email)
+    if user_password is None:
+        return False
+    elif user_password == password:
+        return True
+    else:
+        return False
+
+# Define the main function for the Streamlit app
+def main():
+    st.title("Sign Up and Login")
+
+    # Create the user database CSV file if it does not already exist
+    try:
+        with open(DB_FILENAME, "r") as f:
+            pass
+    except FileNotFoundError:
+        create_user_database()
+
+    # Handle sign up form submission
+    if st.button("Sign Up"):
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
+        confirm_password = st.text_input("Confirm Password", type="password")
+        if password == confirm_password:
+            add_user_to_database(email, password)
+            st.success("Successfully signed up!")
+        else:
+            st.error("Passwords do not match.")
+
+    # Handle login form submission
+    if st.button("Log In"):
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
+        if authenticate_user(email, password):
+            st.success("Successfully logged in!")
+            # TODO: Open new web page for forecasting
+        else:
+            st.error("Incorrect email or password.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Define the URL of the .pkl file on GitHub
