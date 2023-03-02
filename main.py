@@ -33,13 +33,13 @@ def app():
     if st.button("Sign up"):
         # Create repository if it doesn't exist
         try:
-            create_repo("your_github_username", "signup-data")
+            create_repo("udaybhaskar717", "signup-data")
         except:
             pass
         
         # Save sign-up data to repository
         data = {"name": name, "email": email, "password": password}
-        save_data("your_github_username", "signup-data", "signup.json", data)
+        save_data("udaybhaskar717", "signup-data", "signup.json", data)
         
         st.success("Sign-up successful! Please log in.")
     
@@ -50,7 +50,7 @@ def app():
     if st.button("Log in"):
         # Retrieve sign-up data from repository
         try:
-            data = get_data("your_github_username", "signup-data", "signup.json")
+            data = get_data("udaybhaskar717", "signup-data", "signup.json")
         except:
             st.error("Log-in failed. Please sign up first.")
             return
