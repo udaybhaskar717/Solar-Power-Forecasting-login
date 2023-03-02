@@ -95,45 +95,45 @@ def get_user_inputs():
     user_inputs.set_index('Date', inplace=True)
 
     return user_inputs
-    def main():
-        st.title("GIL Solar Power Forecasting Tool for Gandikota PV plant")
-        # Set header image
-        # load image from URL
-        url = "https://raw.githubusercontent.com/udaybhaskar717/Solar-Power-Forecasting-APP/main/GIL_Image.png"
-        image = Image.open(requests.get(url, stream=True).raw)
-        # Create a container for the image
-        img_container = st.container()
-        # Add the image to the container
-        with img_container:
-            st.image(image, use_column_width=True)
-            st.markdown(
-               ''' <style>
-                .stApp {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .stApp > div:first-child {
-                    margin-top: -30px;
-                    margin-right: 10px;
-                    align-self: center;
-                    max-width: 100%;
-                }
-                </style>''', unsafe_allow_html=True)
-        # Add a login form to the app
-        st.sidebar.header("Login")
-        email = st.sidebar.text_input("Email")
-        password = st.sidebar.text_input("Password", type="password")
-        if authenticate_user(email, password):
-            st.sidebar.success("Logged in!")
-            user_inputs = get_user_inputs()
-            # Add a button to make the prediction
-            if st.button("Predict"):
-                # Make the prediction
-                prediction = predict_solar_power(user_inputs)
-                # Display the prediction
-                st.success(f"The predicted solar power output is {round(prediction[0],2)} kW.")
-        else:
-            st.sidebar.error("Incorrect email or password.")
+def main():
+    st.title("GIL Solar Power Forecasting Tool for Gandikota PV plant")
+    # Set header image
+    # load image from URL
+    url = "https://raw.githubusercontent.com/udaybhaskar717/Solar-Power-Forecasting-APP/main/GIL_Image.png"
+    image = Image.open(requests.get(url, stream=True).raw)
+    # Create a container for the image
+    img_container = st.container()
+    # Add the image to the container
+    with img_container:
+        st.image(image, use_column_width=True)
+        st.markdown(
+           ''' <style>
+            .stApp {
+                display: flex;
+                flex-direction: column;
+            }
+            .stApp > div:first-child {
+                margin-top: -30px;
+                margin-right: 10px;
+                align-self: center;
+                max-width: 100%;
+            }
+            </style>''', unsafe_allow_html=True)
+    # Add a login form to the app
+    st.sidebar.header("Login")
+    email = st.sidebar.text_input("Email")
+    password = st.sidebar.text_input("Password", type="password")
+    if authenticate_user(email, password):
+        st.sidebar.success("Logged in!")
+        user_inputs = get_user_inputs()
+        # Add a button to make the prediction
+        if st.button("Predict"):
+            # Make the prediction
+            prediction = predict_solar_power(user_inputs)
+            # Display the prediction
+            st.success(f"The predicted solar power output is {round(prediction[0],2)} kW.")
+    else:
+        st.sidebar.error("Incorrect email or password.")
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
