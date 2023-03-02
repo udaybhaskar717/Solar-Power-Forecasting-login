@@ -65,3 +65,6 @@ def app():
             
         else:
             st.error("Log-in failed. Please check your email and password.")
+if __name__ == '__main__':
+    app()
+
